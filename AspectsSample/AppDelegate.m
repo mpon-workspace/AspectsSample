@@ -24,16 +24,6 @@
                                    NSLog(@"viewWillAppearが呼ばれる前にインターセプト %@ animted:%d", vc, animated);
                                }
                                     error:&error];
-    
-    [UIViewController aspect_hookSelector:@selector(viewWillAppear:)
-                              withOptions:AspectPositionAfter
-                               usingBlock:^(id instance, NSArray *args) {
-                                   // viewWillAppearの引数は一つでanimatedであることは分かっている
-                                   UIViewController *vc = instance;
-                                   BOOL animated = [args firstObject];
-                                   NSLog(@"viewWillAppearが呼ばれた後にインターセプト %@ animated:%d", vc, animated);
-                               }
-                                    error:&error];
     return YES;
 }
 							
