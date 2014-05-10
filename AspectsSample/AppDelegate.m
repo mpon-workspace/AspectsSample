@@ -7,12 +7,33 @@
 //
 
 #import "AppDelegate.h"
+#import "Aspects.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    NSError *error = nil;
+    [UIViewController aspect_hookSelector:@selector(viewWillAppear:)
+                              withOptions:AspectPositionBefore
+                               usingBlock:^(id instance, NSArray *args) {
+                                   // viewWillAppearの引数は一つでanimatedであることは分かっている
+                                   UIViewController *vc = instance;
+                                   BOOL animated = [args firstObject];
+                                   NSLog(@"viewWillAppearが呼ばれる前にインターセプト %@ animted:%d", vc, animated);
+                               }
+                                    error:&error];
+    
+    [UIViewController aspect_hookSelector:@selector(viewWillAppear:)
+                              withOptions:AspectPositionAfter
+                               usingBlock:^(id instance, NSArray *args) {
+                                   // viewWillAppearの引数は一つでanimatedであることは分かっている
+                                   UIViewController *vc = instance;
+                                   BOOL animated = [args firstObject];
+                                   NSLog(@"viewWillAppearが呼ばれた後にインターセプト %@ animated:%d", vc, animated);
+                               }
+                                    error:&error];
     return YES;
 }
 							
