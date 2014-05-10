@@ -7,8 +7,12 @@
 //
 
 #import "RootViewController.h"
+#import "Hoge.h"
+#import "Aspects.h"
 
 @interface RootViewController ()
+
+@property (nonatomic) Hoge *hoge;
 
 @end
 
@@ -18,6 +22,28 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    self.hoge = [[Hoge alloc] init];
+    [self.hoge aspect_hookSelector:@selector(setFuga:)
+                       withOptions:AspectPositionAfter
+                        usingBlock:^(id instance, NSArray *args) {
+                            Hoge *hoge = instance;
+                            NSString *fuga = [args firstObject];
+                            NSLog(@"%@\n%@ set: %@",  [NSThread callStackSymbols], hoge, fuga);
+                        }
+                             error:nil];
+    self.hoge.fuga = @"hogehoge";
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.hoge.fuga = @"fugafuga";
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.hoge.fuga = @"piyopiyo";
 }
 
 - (void)didReceiveMemoryWarning
