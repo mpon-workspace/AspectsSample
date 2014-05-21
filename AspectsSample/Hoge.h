@@ -12,4 +12,6 @@
 
 @property (nonatomic, copy) NSString *fuga;
 
+- (void)performWithArg1:(NSString *)arg1 andArg2:(NSNumber *)arg2;
+
 @end

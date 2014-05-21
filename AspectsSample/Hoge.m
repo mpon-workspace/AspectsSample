@@ -10,4 +10,9 @@
 
 @implementation Hoge
 
+- (void)performWithArg1:(NSString *)arg1 andArg2:(NSNumber *)arg2
+{
+    NSLog(@"%sarg1:%@ arg2:%@", __func__, arg1, arg2);
+}
+
 @end

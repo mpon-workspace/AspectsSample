@@ -17,11 +17,15 @@
     NSError *error = nil;
     [UIViewController aspect_hookSelector:@selector(viewWillAppear:)
                               withOptions:AspectPositionBefore
-                               usingBlock:^(id instance, NSArray *args) {
-                                   // viewWillAppearの引数は一つでanimatedであることは分かっている
-                                   UIViewController *vc = instance;
-                                   BOOL animated = [args firstObject];
-                                   NSLog(@"viewWillAppearが呼ばれる前にインターセプト %@ animted:%d", vc, animated);
+                               usingBlock:^(id<AspectInfo> aspectInfo, BOOL animated) {
+                                   UIViewController *vc = [aspectInfo instance];
+                                   NSArray *args = [aspectInfo arguments];
+                                   
+                                   NSLog(@"viewWillAppearが呼ばれる前にインターセプト");
+                                   NSLog(@"呼ばれたインスタンス:%@", vc);
+                                   NSLog(@"呼ばれたメソッドの引数の数:%ld", [args count]);
+                                   NSLog(@"配列の中身はボクシングされている:%@", [[args firstObject] class]);
+                                   NSLog(@"引数が分かっていれば直接ブロックの引数でも取得可能:%@", animated ? @"YES":@"NO");
                                }
                                     error:&error];
     return YES;
